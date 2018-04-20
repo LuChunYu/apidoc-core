@@ -1,12 +1,9 @@
 {
   "name": "apidoc-core",
-  "version": "0.3.1",
+  "version": "0.8.3",
   "description": "Core parser library to generate apidoc result following the apidoc-spec",
   "author": "Peter Rottmann <rottmann@inveris.de>",
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/apidoc/apidoc-core/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "main": "./lib/index.js",
   "homepage": "https://github.com/apidoc/apidoc-core",
   "repository": {
@@ -18,7 +15,8 @@
   },
   "scripts": {
     "test": "npm run jshint && mocha test/**/*_test.js",
-    "jshint": "jshint lib/ test/"
+    "jshint": "jshint lib/ test/",
+    "check-updates": "npm-check-updates"
   },
   "keywords": [
     "api",
@@ -32,16 +30,20 @@
     "node": ">= 0.10.0"
   },
   "dependencies": {
-    "lodash": "~2.4.1",
-    "semver": "~4.2.0",
-    "wrench": "~1.5.8"
+    "fs-extra": "^3.0.1",
+    "glob": "^7.1.1",
+    "iconv-lite": "^0.4.17",
+    "klaw-sync": "^2.1.0",
+    "lodash": "~4.17.4",
+    "semver": "~5.3.0"
   },
   "devDependencies": {
     "apidoc-example": "*",
-    "jshint": "~2.5.10",
-    "marked": "~0.3.2",
-    "mocha": "~2.1.0",
-    "should": "~4.6.0"
+    "jshint": "~2.9.4",
+    "markdown-it": "^8.3.1",
+    "mocha": "~3.4.1",
+    "npm-check-updates": "^2.11.1",
+    "should": "~11.2.1"
   },
   "jshintConfig": {
     "camelcase": true,

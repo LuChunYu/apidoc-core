@@ -6,10 +6,10 @@
 
 // node modules
 var fs       = require('fs');
-var markdown = require('marked');
 var path     = require('path');
 var semver   = require('semver');
 var should   = require('should');
+var Markdown = require('markdown-it');
 
 var versions = require('apidoc-example').versions;
 
@@ -36,14 +36,11 @@ describe('apiDoc full parse', function() {
         error  : log,
     };
 
-    markdown.setOptions({
-        gfm        : true,
-        tables     : true,
+    var markdown = new Markdown({
         breaks     : false,
-        pedantic   : false,
-        sanitize   : false,
-        smartLists : false,
-        smartypants: false
+        html       : true,
+        linkify    : false,
+        typographer: false
     });
 
     var fixtureFiles = [
@@ -80,23 +77,25 @@ describe('apiDoc full parse', function() {
             'sampleUrl': 'https://api.github.com/v1',
             'header': {
                 'title': 'My own header title',
-                'content': '<h1 id=\"header-md-file\">Header .md File</h1>\n<p>Content of header.md file.</p>\n'
+                'content': '<h1>Header .md File</h1>\n<p>Content of header.md file.</p>\n'
             },
             'footer': {
                 'title': 'My own footer title',
-                'content': '<h1 id=\"footer-md-file\">Footer .md File</h1>\n<p>Content of footer.md file.</p>\n'
+                'content': '<h1>Footer .md File</h1>\n<p>Content of footer.md file.</p>\n'
             },
             'order': [
                 'Error',
                 'Define',
                 'PostTitleAndError',
                 'NotExistingEntry',
-                'PostError'
+                'PostError',
+                'GetParam'
             ]
         });
 
         api = apidoc.parse({
-            src: exampleBasePath + '/src/'
+            src: exampleBasePath + '/src/',
+            lineEnding: '\n'
         });
 
         if (api === false)
@@ -116,7 +115,7 @@ describe('apiDoc full parse', function() {
             var name = fixturePath + '/' + file.filename;
 
             var fixtureContent = fs.readFileSync(name, 'utf8');
-            var createdContent = api[key];
+            var createdContent = api[key] + '\n'; // add linebreak at the end
 
             // creation time remove (never equal)
             fixtureContent = fixtureContent.replace(timeRegExp, '');
@@ -131,8 +130,8 @@ describe('apiDoc full parse', function() {
 
             // split and compare each line
             // TODO: compare objects not line by line
-            var fixtureLines = fixtureContent.split(/\r\n/);
-            var createdLines = createdContent.split(/\r\n/);
+            var fixtureLines = fixtureContent.split(/\n/);
+            var createdLines = createdContent.split(/\n/);
 
 //            if (fixtureLines.length !== createdLines.length)
 //                throw new Error(key + ' not equals to ' + name);
